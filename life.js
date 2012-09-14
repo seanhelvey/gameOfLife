@@ -1,8 +1,28 @@
+/*
+Conway's Game of Life
+Author: Sean Helvey
+Date: 9/14/2012
+*/
+
 $(document).ready(function() {
 	
         test();
 	main();
 
+	/* A crude test to ensure that given test input results in correct output.
+	gameOfLife is called just once here and the results are not displayed.
+	As an example, this game board as input:
+	0 1 0 0 0
+	1 0 0 1 1
+	1 1 0 0 1
+	0 1 0 0 0
+	1 0 0 0 1
+	Will have a subsequent generation of:
+	0 0 0 0 0
+	1 0 1 1 1
+	1 1 1 1 1
+	0 1 0 0 0
+	0 0 0 0 0 */
         function test(){
             var table = [[0,1,0,0,0],[1,0,0,1,1],[1,1,0,0,1],[0,1,0,0,0],[1,0,0,0,1]];
             var outTable = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
@@ -11,6 +31,8 @@ $(document).ready(function() {
             assertEquals(outTable, testTable);
         }
 
+	/* The value of each cell within table should match the values in testTable after one iteration. 
+	An alert message is displayed if any one of the cells in table doesn't match with testTable.  */
         function assertEquals(outTable, testTable){
             for (i = 0; i < 5; i++) {
                 for (j = 0; j < 5; j++) {
@@ -21,20 +43,27 @@ $(document).ready(function() {
             }
         }
 
+	/* The main functon drives program execution by calling gameOfLife every second.
+	Unlike the test function above, the main function will pass a different argument
+	to the gameOfLife function to ensure that results are displayed. */
 	function main(){
 	    var table = [[0,0,0,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,0,0,0]];
 	    var outTable = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
 	    setInterval(function(){gameOfLife(table, outTable, false)},1000);
 	}
 
+	/* gameOfLife calls evolve to access the environment surrounding each cell before
+	copying the values from the input table to the output table and displays results. */
 	function gameOfLife(table, outTable, isTest){
 	    evolve(table, outTable);
 	    copyValues(table, outTable);
 	    if(!isTest){
 		display(outTable);
 	    }
-	}
+	}	
 
+	/* evolve calls checkNeighbors to examine each cells surroundings and determineCellLife
+	to proceess the number of neighboring cells in the context of the cells current state. */
 	function evolve(table, outTable){
 	    var current = 0;
 	    var neighborCount = 0;
@@ -48,6 +77,8 @@ $(document).ready(function() {
 	    }
 	}
 
+	/* The value of each cell is copied from outTable to table at the end of each iteration. 
+	This cannot be done while iterating, because it would affect the results. */
 	function copyValues(table, outTable){
 	    for (i = 0; i < 5; i++) {
 		for (j = 0; j < 5; j++) {
@@ -56,6 +87,7 @@ $(document).ready(function() {
 	    }
 	}
 
+	/* Each neighboring cell is examined and a count of live neighbords is returned. */
 	function checkNeighbors(table, outTable, neighborCount){
 	    var testRow = 0;
 	    var testCol = 0;
@@ -119,6 +151,8 @@ $(document).ready(function() {
 	    return neighborCount;
 	}
 
+	/* Each cell's life for the next round is determined by its current 
+	value and the number of living neighbors immediately surrounding it. */
 	function determineCellLife(currentValue, numNeighbors, outTable){
 	    //under population
 	    if(currentValue == 1 && numNeighbors < 2){
@@ -137,7 +171,8 @@ $(document).ready(function() {
 		outTable[i][j] = 1;
 	    }
 	}
-
+	
+	/* returns boolean false if the cell is dead, true if the cell is alive. */
 	function isAlive(testTable, row, col){
 	    if(testTable[row][col] == 0){
 		return false;
@@ -145,6 +180,9 @@ $(document).ready(function() {
 	    return true;
 	}
 
+	/* returns boolean false if the cell is not defined, true if defined.
+	Note that indicies less than zero or greater than four are assumed to
+	be undefined here, because the size of the table is five by five. */
 	function isDefined(testTable, row, col){
 	    if(row < 0 || col < 0){
 		return false;
@@ -155,6 +193,8 @@ $(document).ready(function() {
 	    return true;
 	}
 
+	/* The div corresponding to each cell is selected and its text 
+	is assigned the value of the appropriate cell of outputTable. */
 	function display(outTable){
 	    $("#1").text(outTable[0][0]);
 	    $("#2").text(outTable[0][1]);
