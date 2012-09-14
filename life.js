@@ -3,14 +3,23 @@ $(document).ready(function() {
 	var table = [[0,1,0,0,0],[1,0,0,1,1],[1,1,0,0,1],[0,1,0,0,0],[1,0,0,0,1]];
 	var outTable = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
 
-	//setInterval(function(){evolve()},1000);
-	evolve();
+	setInterval(function(){evolve()},1000);
+	//evolve(); for testing
 
 	function evolve(){
 	    for (i = 0; i < 5; i++) {
 		for (j = 0; j < 5; j++) {
 		    checkNeighbors();
 		    display();
+		}
+	    }
+	    copyValues(); //******** CRITICAL
+	}
+
+	function copyValues(){
+	    for (i = 0; i < 5; i++) {
+		for (j = 0; j < 5; j++) {
+		    table[i][j] = outTable[i][j];
 		}
 	    }
 	}
@@ -39,7 +48,7 @@ $(document).ready(function() {
 	    }
 
 	    //3 check above right
-	    testRow = i-1;
+ 	    testRow = i-1;
 	    testCol = j+1;
 	    
 	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
@@ -130,7 +139,7 @@ $(document).ready(function() {
 	    if(row < 0 || col < 0){
 		return false;
 	    }
-	    else if(testTable[row][col] == undefined){
+	    else if( row > 4 || col > 4){
 		return false;
 	    }
 	    return true;
