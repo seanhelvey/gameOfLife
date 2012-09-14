@@ -1,0 +1,7 @@
+div {
+  float: left;
+}
+
+div.col1 {
+  clear: both;
+}
