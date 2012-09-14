@@ -69,7 +69,7 @@ $(document).ready(function() {
 	    var neighborCount = 0;
 	    for (i = 0; i < 5; i++) {
 		for (j = 0; j < 5; j++) {
-		    neighborCount = checkNeighbors(table, outTable, neighborCount);
+		    neighborCount = checkNeighbors(table, neighborCount);
 		    current = table[i][j];
 		    determineCellLife(current, neighborCount, outTable);
 		    neighborCount = 0;
@@ -88,66 +88,58 @@ $(document).ready(function() {
 	}
 
 	/* Each neighboring cell is examined and a count of live neighbords is returned. */
-	function checkNeighbors(table, outTable, neighborCount){
+	function checkNeighbors(table, neighborCount){
 	    var testRow = 0;
 	    var testCol = 0;
 	    
 	    //check above left
 	    testRow = i-1;
 	    testCol = j-1;
-	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
-		    neighborCount++;
-	    }
+	    neighborCount = updateNeighborCount(table, testRow, testCol, neighborCount);
 
 	    //check above
 	    testRow = i-1;
 	    testCol = j;	    
-	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
-		    neighborCount++;
-	    }
+	    neighborCount = updateNeighborCount(table, testRow, testCol, neighborCount);
 
 	    //check above right
  	    testRow = i-1;
 	    testCol = j+1;	    
-	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
-		    neighborCount++;
-	    }
+	    neighborCount = updateNeighborCount(table, testRow, testCol, neighborCount);
 
 	    //check right
 	    testRow = i;
 	    testCol = j+1;	    
-	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
-		    neighborCount++;
-	    }
+	    neighborCount = updateNeighborCount(table, testRow, testCol, neighborCount);
 
 	    //check lower right
 	    testRow = i+1;
 	    testCol = j+1;	    
-	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
-		    neighborCount++;
-	    }
+	    neighborCount = updateNeighborCount(table, testRow, testCol, neighborCount);
 
 	    //check below
 	    testRow = i+1;
 	    testCol = j;	    
-	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
-		    neighborCount++;
-	    }
+	    neighborCount = updateNeighborCount(table, testRow, testCol, neighborCount);
 
 	    //check lower left
 	    testRow = i+1;
 	    testCol = j-1;	    
-	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
-		    neighborCount++;
-	    }
+	    neighborCount = updateNeighborCount(table, testRow, testCol, neighborCount);
 
 	    //check left
 	    testRow = i;
 	    testCol = j-1;	    
+	    neighborCount = updateNeighborCount(table, testRow, testCol, neighborCount);
+
+	    return neighborCount;
+	}
+
+	/* If the neighbor is defined and alive, neighborCount is incremented and returned */
+	function updateNeighborCount(table, testRow, testCol, neighborCount){
 	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
 		    neighborCount++;
 	    }
-
 	    return neighborCount;
 	}
 
