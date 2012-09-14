@@ -1,15 +1,26 @@
 $(document).ready(function() {
 	
-	var table = [[0,0,0,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,0,0,0]];
+	var table = [[0,1,0,0,0],[1,0,0,1,1],[1,1,0,0,1],[0,1,0,0,0],[1,0,0,0,1]];
 	var outTable = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
+	var testTable = [[0,0,0,0,0],[1,0,1,1,1],[1,1,1,1,1],[0,1,0,0,0],[0,0,0,0,0]];
 
-	setInterval(function(){evolve()},1000);
+	evolve();
+	assertEquals();
+
+	function assertEquals(){
+	    for (i = 0; i < 5; i++) {
+		for (j = 0; j < 5; j++) {
+		    if(outTable[i][j] != testTable[i][j]){
+			alert("test failed");
+		    }
+		}
+	    }
+	}
 
 	function evolve(){
 	    for (i = 0; i < 5; i++) {
 		for (j = 0; j < 5; j++) {
 		    checkNeighbors();
-		    display();
 		}
 	    }
 	    copyValues(); //******** CRITICAL
@@ -134,39 +145,5 @@ $(document).ready(function() {
 	    }
 	    return true;
 	}
-
-	function display(){
-	    $("#1").text(outTable[0][0]);
-	    $("#2").text(outTable[0][1]);
-	    $("#3").text(outTable[0][2]);
-	    $("#4").text(outTable[0][3]);
-	    $("#5").text(outTable[0][4]);
-
-	    $("#6").text(outTable[1][0]);
-	    $("#7").text(outTable[1][1]);
-	    $("#8").text(outTable[1][2]);
-	    $("#9").text(outTable[1][3]);
-	    $("#10").text(outTable[1][4]);
-
-	    $("#11").text(outTable[2][0]);
-	    $("#12").text(outTable[2][1]);
-	    $("#13").text(outTable[2][2]);
-	    $("#14").text(outTable[2][3]);
-	    $("#15").text(outTable[2][4]);
-
-	    $("#16").text(outTable[3][0]);
-	    $("#17").text(outTable[3][1]);
-	    $("#18").text(outTable[3][2]);
-	    $("#19").text(outTable[3][3]);
-	    $("#20").text(outTable[3][4]);
-	    
-	    $("#21").text(outTable[4][0]);
-	    $("#22").text(outTable[4][1]);
-	    $("#23").text(outTable[4][2]);
-	    $("#24").text(outTable[4][3]);
-	    $("#25").text(outTable[4][4]);
-
-	}
-
 });
 
