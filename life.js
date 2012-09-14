@@ -4,11 +4,9 @@ $(document).ready(function() {
 	main();
 
         function test(){
-
             var table = [[0,1,0,0,0],[1,0,0,1,1],[1,1,0,0,1],[0,1,0,0,0],[1,0,0,0,1]];
             var outTable = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
             var testTable = [[0,0,0,0,0],[1,0,1,1,1],[1,1,1,1,1],[0,1,0,0,0],[0,0,0,0,0]];
-
             gameOfLife(table, outTable, true);
             assertEquals(outTable, testTable);
         }
@@ -24,18 +22,14 @@ $(document).ready(function() {
         }
 
 	function main(){
-
 	    var table = [[0,0,0,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,0,0,0]];
 	    var outTable = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
-
 	    setInterval(function(){gameOfLife(table, outTable, false)},1000);
-       
 	}
 
 	function gameOfLife(table, outTable, isTest){
 	    evolve(table, outTable);
 	    copyValues(table, outTable);
-
 	    if(!isTest){
 		display(outTable);
 	    }
@@ -62,72 +56,62 @@ $(document).ready(function() {
 	    }
 	}
 
-
 	function checkNeighbors(table, outTable, neighborCount){
-
 	    var testRow = 0;
 	    var testCol = 0;
 	    
-	    //1 check above left
+	    //check above left
 	    testRow = i-1;
 	    testCol = j-1;
-	    
 	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
 		    neighborCount++;
 	    }
 
-	    //2 check above
+	    //check above
 	    testRow = i-1;
-	    testCol = j;
-	    
+	    testCol = j;	    
 	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
 		    neighborCount++;
 	    }
 
-	    //3 check above right
+	    //check above right
  	    testRow = i-1;
-	    testCol = j+1;
-	    
+	    testCol = j+1;	    
 	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
 		    neighborCount++;
 	    }
 
-	    //4 check right
+	    //check right
 	    testRow = i;
-	    testCol = j+1;
-	    
+	    testCol = j+1;	    
 	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
 		    neighborCount++;
 	    }
 
-	    //5 check lower right
+	    //check lower right
 	    testRow = i+1;
-	    testCol = j+1;
-	    
+	    testCol = j+1;	    
 	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
 		    neighborCount++;
 	    }
 
-	    //6 check below
+	    //check below
 	    testRow = i+1;
-	    testCol = j;
-	    
+	    testCol = j;	    
 	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
 		    neighborCount++;
 	    }
 
-	    //7 check lower left
+	    //check lower left
 	    testRow = i+1;
-	    testCol = j-1;
-	    
+	    testCol = j-1;	    
 	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
 		    neighborCount++;
 	    }
 
-	    //8 check left
+	    //check left
 	    testRow = i;
-	    testCol = j-1;
-	    
+	    testCol = j-1;	    
 	    if(isDefined(table, testRow, testCol) && isAlive(table, testRow, testCol)) {
 		    neighborCount++;
 	    }
@@ -201,8 +185,6 @@ $(document).ready(function() {
 	    $("#23").text(outTable[4][2]);
 	    $("#24").text(outTable[4][3]);
 	    $("#25").text(outTable[4][4]);
-
 	}
-
 });
 
