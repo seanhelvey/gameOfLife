@@ -1,21 +1,60 @@
 $(document).ready(function() {
 	
-	var table = [[0,0,0,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,0,0,0]];
-	var outTable = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
+        test();
+	main();
 
-	setInterval(function(){evolve()},1000);
+        function test(){
 
-	function evolve(){
-	    for (i = 0; i < 5; i++) {
-		for (j = 0; j < 5; j++) {
-		    checkNeighbors();
-		    display();
-		}
-	    }
-	    copyValues(); //******** CRITICAL
+            var table = [[0,1,0,0,0],[1,0,0,1,1],[1,1,0,0,1],[0,1,0,0,0],[1,0,0,0,1]];
+            var outTable = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
+            var testTable = [[0,0,0,0,0],[1,0,1,1,1],[1,1,1,1,1],[0,1,0,0,0],[0,0,0,0,0]];
+
+            gameOfLife(table, outTable, true);
+            assertEquals(outTable, testTable);
+        }
+
+        function assertEquals(outTable, testTable){
+            for (i = 0; i < 5; i++) {
+                for (j = 0; j < 5; j++) {
+                    if(outTable[i][j] != testTable[i][j]){
+                        alert("test failed");
+                    }
+                }
+            }
+        }
+
+	function main(){
+
+	    var table = [[0,0,0,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,0,0,0]];
+	    var outTable = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
+
+	    setInterval(function(){gameOfLife(table, outTable, false)},1000);
+       
 	}
 
-	function copyValues(){
+	function gameOfLife(table, outTable, isTest){
+	    evolve(table, outTable);
+	    copyValues(table, outTable);
+
+	    if(!isTest){
+		display(outTable);
+	    }
+	}
+
+	function evolve(table, outTable){
+	    var current = 0;
+	    var neighborCount = 0;
+	    for (i = 0; i < 5; i++) {
+		for (j = 0; j < 5; j++) {
+		    neighborCount = checkNeighbors(table, outTable, neighborCount);
+		    current = table[i][j];
+		    determineCellLife(current, neighborCount, outTable);
+		    neighborCount = 0;
+		}
+	    }
+	}
+
+	function copyValues(table, outTable){
 	    for (i = 0; i < 5; i++) {
 		for (j = 0; j < 5; j++) {
 		    table[i][j] = outTable[i][j];
@@ -23,12 +62,11 @@ $(document).ready(function() {
 	    }
 	}
 
-	var current = 0;
-	var testRow = 0;
-	var testCol = 0;
-	var neighborCount = 0;
-	function checkNeighbors(){
-	    current = table[i][j];
+
+	function checkNeighbors(table, outTable, neighborCount){
+
+	    var testRow = 0;
+	    var testCol = 0;
 	    
 	    //1 check above left
 	    testRow = i-1;
@@ -94,12 +132,10 @@ $(document).ready(function() {
 		    neighborCount++;
 	    }
 
-	    //JUDGEMENT DAY
-	    determineCellLife(current, neighborCount);
-	    neighborCount = 0;
+	    return neighborCount;
 	}
 
-	function determineCellLife(currentValue, numNeighbors){
+	function determineCellLife(currentValue, numNeighbors, outTable){
 	    //under population
 	    if(currentValue == 1 && numNeighbors < 2){
 		outTable[i][j] = 0;
@@ -135,7 +171,7 @@ $(document).ready(function() {
 	    return true;
 	}
 
-	function display(){
+	function display(outTable){
 	    $("#1").text(outTable[0][0]);
 	    $("#2").text(outTable[0][1]);
 	    $("#3").text(outTable[0][2]);
